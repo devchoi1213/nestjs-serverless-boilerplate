@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import serverlessExpress from '@vendia/serverless-express';
+// import eventContext from '@vendia/serverless-express/src';
 import { Callback, Context, Handler, APIGatewayEvent } from 'aws-lambda';
 import { AppModule } from './app.module';
 import { ReplaySubject, firstValueFrom } from 'rxjs';
@@ -8,7 +9,7 @@ import { ReplaySubject, firstValueFrom } from 'rxjs';
 const serverSubject = new ReplaySubject<Handler>()
 
 async function bootstrap(): Promise<Handler> {
-	console.log('COLD START: Initializing Nest');
+	console.log('COLD START: Initializing Nest!!!');
 	const app = await NestFactory.create(AppModule);
 	await app.init();
 

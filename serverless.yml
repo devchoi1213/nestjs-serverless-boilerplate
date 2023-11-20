@@ -1,11 +1,30 @@
 service: serverless-example
-
 plugins:
   - serverless-offline
+  - serverless-dotenv-plugin
+
+#custom:
+#  dotenv:
+#    basePath: env
+
+# warmup 플러그인 적용 후 배포하면 에러 발생. 나중에 해결할 것
+#  - serverless-plugin-warmup
+#
+#custom:
+#  warmup:
+#    mainWarmer:
+#      enabled: true
+#      events:
+#        - schedule: cron(0/5 8-17 ? * MON-FRI *)
+#      concurrency: 10
 
 provider:
   name: aws
   runtime: nodejs18.x
+  region: ap-northeast-2
+  environment:
+  # With the plugin enabled, all variables in .env.development are automatically imported
+
 
 functions:
   main:
@@ -17,3 +36,13 @@ functions:
       - http:
           method: ANY
           path: '{proxy+}'
+#    warmup: true
+
+
+custom:
+  dotenv:
+    path: ./env/.env.${env:NODE_ENV}
+  serverless-offline:
+    host: '0.0.0.0' # Vital when operating from within a docker container
+    httpPort: ${env:HTTP_PORT, '3000'}
+    lambdaPort: ${env:LAMBDA_PORT, '4002'}
